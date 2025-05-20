@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lane Driving</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap');
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #878787;
+            font-family: 'Proxima Nova', sans-serif;}
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;}
+        #road {
+            position: absolute;
+            width: 20%;
+            height: 100%;
+            background-color: #222222;
+            left: 40%;
+            top: 0;}
+        #player-car {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: yellow;
+            bottom: 30%;
+            left: 50%;
+            border-radius: 50%
+            transform: translateX(-50%);}
+        .opponent-car {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            bottom: 100%;
+            left: 50%;
+            border-radius: 50%
+            transform: translateX(-50%);}
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;}
+        .modal button {
+            padding: 10px 20px;
+            background-color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;}
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="road"></div>
+        <div id="player-car"></div>
+        <div id="opponent-cars"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const playerCar = document.getElementById('player-car');
+            const gameContainer = document.getElementById('game-container');
+            const road = document.getElementById('road');
+            const opponentCarsContainer = document.getElementById('opponent-cars');
+            let playerCarLeft = parseInt(window.getComputedStyle(playerCar).getPropertyValue('left'));
+            const gameWidth = parseInt(window.getComputedStyle(gameContainer).getPropertyValue('width'));
+            const roadWidth = parseInt(window.getComputedStyle(road).getPropertyValue('width'));
+            let isGameOver = false;
+            const playerCarWidth = 50; 
+            const playerCarHeight = 100; 
+            const opponentCarWidth = 50; 
+            const opponentCarHeight = 100;
+            function movePlayerCar(direction) {
+                if (!isGameOver) {
+                    if (direction === 'left' && playerCarLeft > roadWidth / 2) {
+                        playerCarLeft -= 30;}
+                    if (direction === 'right' && playerCarLeft < gameWidth - roadWidth / 2 - 50) {
+                        playerCarLeft += 30;}
+                    playerCar.style.left = playerCarLeft + 'px';
+                    checkCollision();}}
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'ArrowLeft') {
+                    movePlayerCar('left');}
+                if (event.key === 'ArrowRight') {
+                    movePlayerCar('right');}});
+            function createOpponentCar() {
+                if (!isGameOver) {
+                    const opponentCar = document.createElement('div');
+                    opponentCar.classList.add('opponent-car');
+                    const maxPosition = (gameWidth + roadWidth) / 2 - opponentCarWidth;
+                    const minPosition = (gameWidth - roadWidth) / 2;
+                    const randomPosition = Math.random() * (maxPosition - minPosition) + minPosition;
+                    opponentCar.style.left = randomPosition + 'px';
+                    opponentCarsContainer.appendChild(opponentCar);
+                    const moveInterval = setInterval(() => {
+                        if (!isGameOver) {
+                            const opponentCarBottom = parseInt(window.getComputedStyle(opponentCar).getPropertyValue('bottom'));
+                            if (opponentCarBottom > 0) {
+                                opponentCar.style.bottom = (opponentCarBottom - 5) + 'px';
+                                checkCollision();
+                            } else {
+                                clearInterval(moveInterval);
+                                opponentCar.remove();}}
+                    }, 20);}}
+            setInterval(createOpponentCar, 1100);
+            function checkCollision() {
+                const playerCarRect = playerCar.getBoundingClientRect();
+                const playerCarTop = playerCarRect.top;
+                const playerCarBottom = playerCarRect.bottom;
+                const playerCarLeft = playerCarRect.left; 
+                const playerCarRight = playerCarRect.right; 
+                const opponentCars = document.querySelectorAll('.opponent-car');
+                opponentCars.forEach(function (opponentCar) {
+                    const opponentCarRect = opponentCar.getBoundingClientRect();
+                    const opponentCarTop = opponentCarRect.top;
+                    const opponentCarBottom = opponentCarRect.bottom;
+                    const opponentCarLeft = opponentCarRect.left; 
+                    const opponentCarRight = opponentCarRect.right;
+                    if (
+                        playerCarTop < opponentCarBottom &&
+                        playerCarBottom > opponentCarTop &&
+                        playerCarLeft < opponentCarRight &&
+                        playerCarRight > opponentCarLeft
+                    ) {
+                        endGame();
+                    }});
+                if (
+                    playerCarLeft < (gameWidth - roadWidth) / 2 || 
+                    playerCarRight > (gameWidth + roadWidth) / 2 
+                ) {
+                    endGame();}}
+            function endGame() {
+                isGameOver = true;
+                const modal = document.createElement('div');
+                modal.classList.add('modal');
+                const restartButton = document.createElement('button');
+                restartButton.textContent = 'Restart';
+                restartButton.addEventListener('click', function () {
+                    modal.remove(); 
+                    resetGame();});
+                modal.appendChild(restartButton);
+                gameContainer.appendChild(modal);}
+            function resetGame() {
+                isGameOver = false;
+                playerCar.style.left = (gameWidth - playerCarWidth) / 2 + 'px'; 
+                opponentCarsContainer.innerHTML = '';}});
+    </script>
+</body>
+</html>

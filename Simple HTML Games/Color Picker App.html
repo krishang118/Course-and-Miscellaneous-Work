@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Color Picker</title>
+    <style>
+        body {
+            font-family: 'San Francisco', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            margin: 0;
+            color: #fff; }
+        .container {
+            text-align: center;}
+        .instructions {
+            margin: 10px 0;}
+        .color-picker {
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: crosshair;
+            margin: 20px auto;}
+        .selected-color {
+            margin-top: 20px;
+            font-size: 1.5em;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Color Picker</h1>
+        <p class="instructions">Click anywhere on the square and you get a color!</p>
+        <div class="color-picker" id="colorPicker"></div>
+        <div class="selected-color">
+            <p>Selected Color: <span id="colorHex">#FFFFFF</span></p>
+        </div>
+    </div>
+    <script>
+        const colorPicker = document.getElementById('colorPicker');
+        const colorHex = document.getElementById('colorHex');
+        colorPicker.addEventListener('click', (event) => {
+            const rect = colorPicker.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            const canvas = document.createElement('canvas');
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, 'red');
+            gradient.addColorStop(0.15, 'yellow');
+            gradient.addColorStop(0.33, 'green');
+            gradient.addColorStop(0.50, 'cyan');
+            gradient.addColorStop(0.66, 'blue');
+            gradient.addColorStop(0.85, 'magenta');
+            gradient.addColorStop(1, 'red');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            const data = ctx.getImageData(x, y, 1, 1).data;
+            const hex = rgbToHex(data[0], data[1], data[2]);
+            colorPicker.style.backgroundColor = hex;
+            colorHex.textContent = hex;});
+        function rgbToHex(r, g, b) {
+            const toHex = (c) => {
+                const hex = c.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;};
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;}
+    </script>
+</body>
+</html>
