@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="buttons">
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue(')')">)</button>
+            <button onclick="clearDisplay()">AC</button>
+            <button onclick="backspace()">←</button>
+            <button onclick="appendValue('sin(')">sin</button>
+            <button onclick="appendValue('cos(')">cos</button>
+            <button onclick="appendValue('tan(')">tan</button>
+            <button onclick="appendValue(' ln(')">ln</button>
+            <button onclick="appendValue('^')">^</button>
+            <button onclick="squareRoot()">√</button>
+            <button onclick="calculateFactorial()">!</button>
+            <button onclick="appendValue(' log10(')">log10</button>  
+            <button onclick="appendValue('+')">+</button>
+            <button onclick="appendValue('-')">-</button>
+            <button onclick="appendValue('*')">x</button>
+            <button onclick="appendValue('/')">÷</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="calculate()">Ans</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="appendValue(' cm in inches is')">cm to in</button>
+            <button onclick="appendValue(' inches in cm is')">in to cm</button>
+            <button onclick="appendValue(' meters in feet is')">m to ft</button>
+            <button onclick="appendValue(' feet in meters is')">ft to m</button>
+            <button onclick="appendValue(' yards in inches is')">yd to in</button>
+            <button onclick="appendValue(' inches in yards is')">in to yd</button>
+            <button onclick="appendValue(' kilometers in miles is')">km to mi</button>
+            <button onclick="appendValue(' miles in kilometers is')">mi to km</button>
+            <button onclick="appendValue(' ounces in grams is')">oz to g</button>
+            <button onclick="appendValue(' grams in ounces is')">g to oz</button>
+            <button onclick="appendValue(' pounds in kilograms is')">lb to kg</button>
+            <button onclick="appendValue(' kilograms in pounds is')">kg to lb</button>
+            <button onclick="appendValue(' liters in gallons is')">L to gal</button>
+            <button onclick="appendValue(' gallons in liters is')">gal to L</button>
+            <button onclick="appendValue(' years in days is')">years to days</button>
+            <button onclick="appendValue(' days in years is')">days to years</button>
+            <button onclick="appendValue(' °C in °F is')">°C to °F</button>
+            <button onclick="appendValue(' °F in °C is')">°F to °C</button>
+            <button onclick="appendValue(' °C in K is')">°C to K</button>
+            <button onclick="appendValue(' K in °C is')">K to °C</button>
+            <button onclick="appendValue(' kmph in mph is')">kmph to mph</button>
+            <button onclick="appendValue(' mph in kmph is')">mph to kmph</button>
+            <button onclick="appendValue(' degrees in radians is')">° to rad</button>
+            <button onclick="appendValue(' radians in degrees is')">rad to °</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
